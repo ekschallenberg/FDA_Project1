@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard &mdash; Best-Rated Books, By Genre and By Decade</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html">Shelf<span>Life</span></a>
+  <div class="links">
+    <a href="index.html">Report</a>
+    <a href="dashboard.html" class="active">Dashboard</a>
+  </div>
+</nav>
+
+<main>
+  <header class="hero" style="padding-bottom: 1.4rem;">
+    <h1 style="font-size:1.7rem;">Explore the data</h1>
+    <p class="summary" style="margin:0;">
+      Filter 45,203 books by year, genre, language, format, and minimum rating.
+      Every number and chart below recomputes live in your browser.
+    </p>
+  </header>
+
+  <div class="dash-layout">
+    <aside class="filters-panel">
+      <h2>Filters</h2>
+
+      <div class="filter-group">
+        <label for="year-from">Publication year</label>
+        <div class="year-range">
+          <input type="number" id="year-from" />
+          <span>&ndash;</span>
+          <input type="number" id="year-to" />
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Genre <span id="genre-count-label" style="text-transform:none;font-weight:400;"></span></label>
+        <div class="genre-list" id="genre-list"></div>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-language">Language</label>
+        <select id="filter-language"></select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-format">Format</label>
+        <select id="filter-format"></select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-min-rating">Minimum rating: <span id="min-rating-value" class="rating-value">0.0</span></label>
+        <input type="range" id="filter-min-rating" min="0" max="5" step="0.1" value="0" style="width:100%;" />
+      </div>
+
+      <button id="reset-btn" type="button">Reset all filters</button>
+    </aside>
+
+    <div class="dash-main">
+      <div class="dash-summary" id="summary-stats">
+        <div class="stat-tile"><div class="stat-value">&hellip;</div><div class="stat-label">Loading</div></div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="panel-head">
+          <h3>By genre</h3>
+          <div class="panel-controls">
+            <select data-panel="1" data-role="measure"></select>
+            <select data-panel="1" data-role="breakdown"></select>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="dash-chart-1"></canvas></div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="panel-head">
+          <h3>By decade</h3>
+          <div class="panel-controls">
+            <select data-panel="2" data-role="measure"></select>
+            <select data-panel="2" data-role="breakdown"></select>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="dash-chart-2"></canvas></div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="panel-head">
+          <h3>By language</h3>
+          <div class="panel-controls">
+            <select data-panel="3" data-role="measure"></select>
+            <select data-panel="3" data-role="breakdown"></select>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="dash-chart-3"></canvas></div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="panel-head">
+          <h3>By format</h3>
+          <div class="panel-controls">
+            <select data-panel="4" data-role="measure"></select>
+            <select data-panel="4" data-role="breakdown"></select>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="dash-chart-4"></canvas></div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-head">
+          <strong id="table-caption">Books matching the current filters</strong>
+          <span id="table-count" class="loading-note"></span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="title">Title</th>
+              <th data-sort="author">Author</th>
+              <th data-sort="year">Year</th>
+              <th data-sort="genres">Genres</th>
+              <th data-sort="rating">Rating</th>
+              <th data-sort="numRatings">Ratings</th>
+              <th data-sort="bookFormat">Format</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+        <div class="pager">
+          <span id="page-info"></span>
+          <button id="prev-page" type="button">&larr; Prev</button>
+          <button id="next-page" type="button">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">Data Website Project &middot; Financial Data Analytics &middot; built with Claude Code</footer>
+
+<script src="js/vendor/chart.umd.js"></script>
+<script src="js/data.js"></script>
+<script src="js/agg.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

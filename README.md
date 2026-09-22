@@ -1,57 +1,71 @@
-# FDA_Project1
+# ShelfLife &mdash; Best-Rated Books, By Genre and By Decade
 
-Panel-data project on books: what were the best-rated genres over time?
+Data Website Project, Financial Data Analytics. A two-page site: a scrollable
+report of findings (`index.html`) and an interactive dashboard
+(`dashboard.html`), both built on a panel of Goodreads books.
 
-## Dataset
+**Live site:** _add the GitHub Pages URL here once published_
 
-**Goodreads "Best Books Ever" dataset** — 52,478 books scraped from
-Goodreads' Best Books Ever list (Lorena Casanova Lozano & Sergio Costa
-Planells, Fall 2020), CC BY-NC 4.0. Source repo:
-https://github.com/scostap/goodreads_bbe_dataset (identical to the Kaggle
-mirrors, e.g. `thedevastator/comprehensive-overview-of-52478-goodreads-best-b`).
+## The question
 
-Each book lists several genres (Goodreads shelf tags), so the cleaned data
-explodes each book into one row per (book, genre) pair — genre is the
-panel's group column, publication year is the time column.
+Which book genres actually earn the highest reader ratings, has that answer
+changed over time, and what else (format, length, popularity) moves a book's
+rating?
 
-## Reproducing the data
+## The data
 
-```
-python scripts/download_data.py   # fetches data/raw/books_1.Best_Books_Ever.csv (~71MB, gitignored)
-python scripts/clean_data.py      # writes data/processed/books_panel.csv
-```
+**Goodreads "Best Books Ever" dataset** &mdash; 52,478 books scraped from
+Goodreads' Best Books Ever list by Lorena Casanova Lozano and Sergio Costa
+Planells (Fall 2020), published under CC BY-NC 4.0. Source:
+[github.com/scostap/goodreads_bbe_dataset](https://github.com/scostap/goodreads_bbe_dataset)
+(identical to the Kaggle mirrors, e.g. `thedevastator/comprehensive-overview-of-52478-goodreads-best-b`).
 
-## data/processed/books_panel.csv
+One row is one book, published in one year, tagged with one or more genres
+(a book counts as an "event" under each genre it lists &mdash; see
+`data/processed/books_panel.csv`). The site's dataset (`assets/data/books.json`)
+restricts genres to the 25 most common (979 raw genre tags include a lot of
+noisy, near-duplicate shelf tags like "Novels" or "Adult"), which leaves
+**45,203 books, 25 genres, and 113 distinct publication years (1873&ndash;2021)**
+&mdash; comfortably meeting the assignment's panel-data requirements (&ge;50,000
+source rows, &ge;5 time periods, &ge;10 groups, &ge;8 columns, &ge;2 categorical
+and &ge;2 numeric variables). Full accounting of dropped rows is in the
+report's closing section.
 
-400,136 rows x 15 columns, one row = one (book, genre) pair.
+## Files
 
-| column | description |
+| Path | What it does |
 |---|---|
-| `bookId` | Goodreads book identifier (repeats across genre rows for the same book) |
-| `title`, `author` | book title and author |
-| `year` | publication year, parsed from Goodreads' `publishDate` field (1873-2021) |
-| `rating` | average Goodreads rating (0-5) |
-| `numRatings` | number of ratings the book received |
-| `pages` | page count |
-| `price` | listed price (19.9% missing — sparse in the source data) |
-| `likedPercent` | % of raters who liked the book |
-| `bbeScore`, `bbeVotes` | Goodreads "Best Books Ever" list score/vote count |
-| `language` | book language |
-| `bookFormat` | edition format (Hardcover, Paperback, Kindle Edition, ...) |
-| `publisher` | publisher |
-| `genre` | one genre tag for this book (979 distinct values; the top ones — Fiction, Romance, Fantasy, Young Adult, ... — are the most reliable for filtering, since the long tail is noisy user shelf tags) |
+| `index.html` | The report page: title, headline stats, 8 findings (each with a chart), and a closing methodology section. |
+| `dashboard.html` | The interactive dashboard: filters, summary stats, 4 switchable charts, and a sortable/paginated table. |
+| `css/style.css` | Shared styling for both pages (nav bar, stat tiles, charts, filters, table). |
+| `js/data.js` | Fetches `assets/data/books.json` and builds the book&times;genre "events" array used for genre-level aggregation. |
+| `js/agg.js` | Shared group-by/measure helpers (`MEASURES`, `BREAKDOWNS`, `aggregate()`) used by both pages, so every number is computed the same way. |
+| `js/charts.js` | Thin Chart.js wrappers (bar/line chart builders) with the site's color palette. |
+| `js/report.js` | Computes and renders every headline stat, finding paragraph, and chart on `index.html`. |
+| `js/dashboard.js` | Filter state, panel rendering, table sorting/pagination, and the reset button on `dashboard.html`. |
+| `js/vendor/chart.umd.js` | [Chart.js](https://www.chartjs.org/) v4.4.4, vendored locally (no CDN dependency, no external runtime requests). |
+| `assets/data/books.json` | The compact dataset the site loads: one row per book, with a `genres` array, restricted to the top 25 genres. Built by `scripts/build_site_data.py`. |
+| `data/raw/` | Raw downloaded CSV (gitignored &mdash; regenerate with `scripts/download_data.py`). |
+| `data/processed/books_panel.csv` | The full cleaned panel: one row per (book, genre) pair, 400,136 rows, before the top-25-genre restriction used for the website. |
+| `scripts/download_data.py` | Downloads the raw source CSV into `data/raw/`. |
+| `scripts/clean_data.py` | Parses publish dates and explodes genres to produce `data/processed/books_panel.csv`. |
+| `scripts/build_site_data.py` | Restricts to the top 25 genres and writes the browser-sized `assets/data/books.json`. |
+| `FDA Data Website Project.pdf` | The assignment instructions. |
 
-Requirements check: 400,136 rows (>50k), 15 columns (>8), 114 distinct
-years (>5), 979 distinct genres (>10), categorical columns to filter on
-(`genre`, `language`, `bookFormat`, `publisher`), numeric columns to
-total/average/rank (`rating`, `numRatings`, `pages`, `price`).
+## Reproducing the data pipeline
 
-## Known data quality notes
+```
+python scripts/download_data.py    # -> data/raw/books_1.Best_Books_Ever.csv
+python scripts/clean_data.py       # -> data/processed/books_panel.csv
+python scripts/build_site_data.py  # -> assets/data/books.json
+```
 
-- `publishDate` in the raw source mixes formats (`"09/14/08"`,
-  `"November 2nd 2011"`, `"1989"`); `clean_data.py` parses these and drops
-  a handful of scrape artifacts (e.g. `"2064"`).
-- ~8.8% of books have no genre tag and are dropped from the panel.
-- The genre field is Goodreads' user-assigned shelf tags, not a curated
-  taxonomy — expect some noisy/overlapping tags (e.g. "Novels", "Adult")
-  alongside real genres.
+## Running the site locally
+
+No build step &mdash; it's static HTML/CSS/JS. From the repository root:
+
+```
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/index.html`.
