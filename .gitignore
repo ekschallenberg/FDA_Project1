@@ -1,0 +1,7 @@
+# Raw source data is large and reproducible via scripts/download_data.py — not tracked in git.
+data/raw/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
