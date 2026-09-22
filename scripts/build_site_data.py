@@ -48,9 +48,8 @@ def main() -> None:
 
     for col in NUMERIC_COLS:
         books[col] = pd.to_numeric(books[col], errors="coerce")
-        books[col] = books[col].where(books[col].notna(), None)
-    for col in CATEGORICAL_COLS + ["title", "author"]:
-        books[col] = books[col].where(books[col].notna(), None)
+    for col in NUMERIC_COLS + CATEGORICAL_COLS + ["title", "author"]:
+        books[col] = books[col].astype(object).where(books[col].notna(), None)
 
     records = books.to_dict(orient="records")
 

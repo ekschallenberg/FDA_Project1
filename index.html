@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Best-Rated Books, By Genre and By Decade</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html">Shelf<span>Life</span></a>
+  <div class="links">
+    <a href="index.html" class="active">Report</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+</nav>
+
+<main>
+  <header class="hero">
+    <h1>Best-Rated Books, By Genre and By Decade</h1>
+    <p class="byline">Emily Schallenberg &middot; Financial Data Analytics &middot; Data Website Project</p>
+    <p class="summary">
+      This report looks at 45,203 books from Goodreads' "Best Books Ever" list &mdash;
+      each one tagged with one or more of 25 major genres and a publication year
+      spanning 1873 to 2021 &mdash; to ask which genres actually earn the highest
+      reader ratings, whether that answer has changed over time, and what else
+      (format, length, popularity) moves the needle on a book's rating.
+    </p>
+    <div class="stat-grid" id="headline-stats">
+      <div class="stat-tile"><div class="stat-value">&hellip;</div><div class="stat-label">Loading</div></div>
+    </div>
+  </header>
+
+  <section class="finding" id="finding-1">
+    <div class="finding-index">Finding 01</div>
+    <h2>History and nonfiction earn the highest average ratings</h2>
+    <p id="finding-1-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-1"></canvas></div>
+      <p class="chart-caption">Average Goodreads rating by genre, across all 45,203 books in the dataset.</p>
+    </div>
+  </section>
+
+  <section class="finding" id="finding-2">
+    <div class="finding-index">Finding 02</div>
+    <h2>A century of books, and average ratings barely move</h2>
+    <p id="finding-2-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-2"></canvas></div>
+      <p class="chart-caption">Average rating by decade of publication, 1950s&ndash;2020s (decades with at least 100 books).</p>
+    </div>
+  </section>
+
+  <section class="finding" id="finding-3">
+    <div class="finding-index">Finding 03</div>
+    <h2>The best-rated genre changes almost every decade</h2>
+    <p id="finding-3-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-3"></canvas></div>
+      <p class="chart-caption">Highest average-rated genre in each decade (genres with at least 50 books that decade).</p>
+    </div>
+  </section>
+
+  <section class="finding" id="finding-4">
+    <div class="finding-index">Finding 04</div>
+    <h2>Romance and young adult titles have taken over the shelf</h2>
+    <p id="finding-4-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-4"></canvas></div>
+      <p class="chart-caption">Change in each genre's share of published books, 1990s vs. 2010s, in percentage points.</p>
+    </div>
+  </section>
+
+  <section class="finding" id="finding-5">
+    <div class="finding-index">Finding 05</div>
+    <h2>Popularity and quality don't track each other</h2>
+    <p id="finding-5-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-5"></canvas></div>
+      <p class="chart-caption">Average rating by how many reader ratings a book has received.</p>
+    </div>
+  </section>
+
+  <section class="finding" id="finding-6">
+    <div class="finding-index">Finding 06</div>
+    <h2>E-books edge out print in the ratings</h2>
+    <p id="finding-6-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-6"></canvas></div>
+      <p class="chart-caption">Average rating by edition format (formats with at least 200 books).</p>
+    </div>
+  </section>
+
+  <section class="finding" id="finding-7">
+    <div class="finding-index">Finding 07</div>
+    <h2>Longer books earn higher ratings</h2>
+    <p id="finding-7-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-7"></canvas></div>
+      <p class="chart-caption">Average rating by page count.</p>
+    </div>
+  </section>
+
+  <section class="finding" id="finding-8">
+    <div class="finding-index">Finding 08</div>
+    <h2>Humor is the most divisive genre; history, the most agreed-upon</h2>
+    <p id="finding-8-text">Loading&hellip;</p>
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart-8"></canvas></div>
+      <p class="chart-caption">Standard deviation of rating within each genre &mdash; higher means readers disagree more.</p>
+    </div>
+  </section>
+
+  <section class="finding closing" id="about-data">
+    <h2>About this data</h2>
+    <dl>
+      <dt>Source</dt>
+      <dd>
+        Goodreads' "Best Books Ever" list, scraped by Lorena Casanova Lozano and Sergio
+        Costa Planells (Fall 2020), published under CC BY-NC 4.0.
+        <a href="https://github.com/scostap/goodreads_bbe_dataset" target="_blank" rel="noopener">github.com/scostap/goodreads_bbe_dataset</a>.
+      </dd>
+      <dt>What one row is</dt>
+      <dd id="about-row">Loading&hellip;</dd>
+      <dt>Rows dropped, and why</dt>
+      <dd id="about-dropped">Loading&hellip;</dd>
+      <dt>How the numbers are computed</dt>
+      <dd>
+        "Average rating" is the mean of each book's own Goodreads average rating
+        (not a rating recomputed from individual reviews, which aren't in this
+        dataset). "Median rating" is the middle value of that same list. "Total
+        ratings" sums each book's <code>numRatings</code> field. A genre's or
+        decade's "share of books" is its count of books divided by the total
+        book count in the same comparison group. All of these are computed
+        client-side, live, from <code>assets/data/books.json</code> &mdash; the
+        same file and the same functions (<code>js/agg.js</code>) power both
+        this report and the <a href="dashboard.html">dashboard</a>, so the two
+        pages always agree.
+      </dd>
+    </dl>
+  </section>
+</main>
+
+<footer class="site-footer">Data Website Project &middot; Financial Data Analytics &middot; built with Claude Code</footer>
+
+<script src="js/vendor/chart.umd.js"></script>
+<script src="js/data.js"></script>
+<script src="js/agg.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>
