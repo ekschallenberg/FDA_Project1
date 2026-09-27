@@ -42,6 +42,7 @@ report's closing section.
 | `js/agg.js` | Shared group-by/measure helpers (`MEASURES`, `BREAKDOWNS`, `aggregate()`) used by both pages, so every number is computed the same way. |
 | `js/charts.js` | Thin Chart.js wrappers (bar/line chart builders) with the site's color palette. |
 | `js/report.js` | Computes and renders every headline stat, finding paragraph, and chart on `index.html`. |
+| `js/pageflip.js` | Tilts each finding section based on scroll position (report page only) so sections rotate away like turning a page; disabled under `prefers-reduced-motion`. |
 | `js/dashboard.js` | Filter state, panel rendering, table sorting/pagination, and the reset button on `dashboard.html`. |
 | `js/vendor/chart.umd.js` | [Chart.js](https://www.chartjs.org/) v4.4.4, vendored locally (no CDN dependency, no external runtime requests). |
 | `assets/data/books.json` | The compact dataset the site loads: one row per book, with a `genres` array, restricted to the top 25 genres. Built by `scripts/build_site_data.py`. |
