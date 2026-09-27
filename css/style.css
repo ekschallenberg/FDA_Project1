@@ -111,9 +111,10 @@ header.hero p.summary { font-size: 1.08rem; max-width: 62ch; }
   font-weight: 600;
 }
 
-main { perspective: 1600px; }
+main { perspective: 1700px; }
 
 section.finding {
+  position: relative;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -121,14 +122,53 @@ section.finding {
   padding: 2.4rem 2.4rem 2.2rem;
   margin: 0 0 2.4rem;
   transform-style: preserve-3d;
-  transform-origin: top center;
-  will-change: transform, opacity;
 }
 
 section.finding:last-of-type { margin-bottom: 2.4rem; }
 
+.page-content { will-change: opacity; }
+
+.flip-overlay {
+  position: absolute;
+  inset: 0;
+  background: #f8f5ee;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform-style: preserve-3d;
+}
+
+.flip-strip {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background: #f8f5ee;
+  transform-origin: top center;
+  backface-visibility: visible;
+  will-change: transform;
+}
+
+.flip-strip .shade {
+  position: absolute;
+  inset: -1px;
+  background: rgba(48, 34, 22, 1);
+  opacity: 0;
+}
+
+.flip-strip .rim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  section.finding { transform: none !important; opacity: 1 !important; }
+  .flip-overlay { display: none !important; }
+  .page-content { opacity: 1 !important; }
 }
 
 section.finding .finding-index {
